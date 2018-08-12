@@ -177,18 +177,10 @@ grad_pool1 = tf.nn.relu(tf.gradients(h_conv2, h_pool1, grad_ys=grad_conv2)[0])
 grad_conv1 = tf.nn.relu(tf.gradients(h_pool1, h_conv1, grad_ys=grad_pool1)[0])
 grad_x = tf.nn.relu(tf.gradients(h_conv1, x, grad_ys=grad_conv1)[0])
 
-
-v = tf.constant(np.array([[2.],[3.]]), dtype=tf.float32)
-u = tf.matmul(tf.constant(np.array([[3.,4.],[5.,6.]]), dtype=tf.float32),v)
-y = tf.matmul(tf.constant([[1.,2.]]),u)
-
-grad1 = tf.gradients(y, u)
-grad2 = tf.gradients(u, v, grad_ys = grad1)
-grad = tf.gradients(y,v)
-
+# Example of comparison between Guided-BP visualization and real image
 with tf.Session() as sess:
     saliency2 = sess.run(grad_x, feed_dict={x:test_image})[0].reshape(28,28)
-
+    
 saliency_map2 = saliency2 
 plt.figure(2)
 plt.imshow(saliency_map2, cmap = 'binary_r')
